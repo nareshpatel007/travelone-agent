@@ -14,14 +14,6 @@ export default function Page() {
     // Define state
     const [ready, setReady] = useState(false);
 
-    // Is auth login
-    const isLoginUser = isLoggedIn() as boolean || false;
-
-    // If already login
-    if (isLoginUser) {
-        router.push("/dashboard");
-    }
-
     useEffect(() => {
         requestAnimationFrame(() => { setReady(true); });
     }, []);
