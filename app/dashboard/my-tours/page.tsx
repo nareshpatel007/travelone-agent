@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import CommonFooter from "@/components/footer/common-footer";
 import CommonHeader from "@/components/header/common-header";
 import PageHeading from "@/components/common/page-heading";
-import Image from "next/image";
 import { TourCard } from "@/components/tours/tour-card";
 
 export default function Page() {

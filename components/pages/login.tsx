@@ -1,9 +1,14 @@
 "use client"
 
+import { setLoginCookie } from "@/lib/auth";
 import { Loader2, LogIn } from "lucide-react"
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export function LoginPage() {
+    // Define route
+    const router = useRouter();
+
     // Define state
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
@@ -24,8 +29,29 @@ export function LoginPage() {
         setError("");
 
         try {
-            // Update state
-            setIsSuccess(true);
+            // Fetch the data
+            const response = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            // Parse the JSON response
+            const data = await response.json();
+
+            // Check response
+            if (data.status) {
+                // set cookie value
+                setLoginCookie(data?.data);
+
+                // Reload page
+                router.push("/dashboard");
+            } else {
+                // Update state
+                setError(data?.message ?? "Invalid email or password. Please try again.");
+            }
         } catch (error) {
             // Update state
             setError("Invalid email or password");
@@ -38,7 +64,7 @@ export function LoginPage() {
     return (
         <div className="max-w-2xl mx-auto px-5 md:px-0 flex flex-col justify-center py-24 md:py-30 space-y-6">
             <div className="text-center px-4 space-y-2">
-                <h1 className="text-black text-2xl md:text-4xl leading-tight font-medium md:font-normal">
+                <h1 className="text-black text-2xl md:text-3xl leading-tight font-medium">
                     Log In to your supplier account
                 </h1>
                 <p className="text-gray-600 text-base md:text-lg">

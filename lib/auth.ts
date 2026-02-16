@@ -1,17 +1,17 @@
 // Set login cookie
 export function setLoginCookie(data: any) {
-    localStorage.setItem('user', JSON.stringify(data));
+    localStorage.setItem('agent', JSON.stringify(data));
 }
 
 // Get login cookie
 export function getLoginCookie() {
-    const user = localStorage.getItem('user');
+    const user = localStorage.getItem('agent');
     return user ? JSON.parse(user) : null;
 }
 
 // Remove login cookie
 export function removeLoginCookie() {
-    localStorage.removeItem('user');
+    localStorage.removeItem('agent');
 }
 
 // Check if user is logged in

@@ -17,6 +17,10 @@ export default function Page() {
             {ready && <>
                 <CommonHeader />
                 
+                <div className="p-8">
+                    Welcome to Agent Dashboard!
+                </div>
+
                 <CommonFooter />
             </>}
         </>

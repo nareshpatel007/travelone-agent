@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import CommonFooter from "@/components/footer/common-footer";
 import CommonHeader from "@/components/header/common-header";
-import { AlertCircle, List, Play, PlaySquare, RefreshCcw, Upload } from "lucide-react";
+import { AlertCircle, File, Form, List, Play, PlaySquare, RefreshCcw, Upload } from "lucide-react";
 import { CommonPlanTripModal } from "@/components/plan_your_trip/common-popup";
 import { UploadImportModal } from "@/components/plan_your_trip/upload-import";
 import Link from "next/link";
@@ -136,7 +136,16 @@ export default function Page() {
                                         {importList.map((item: any, index: number) => (
                                             <tr key={index} className="text-sm border-t border-[#d9cec1] hover:bg-gray-50">
                                                 <td className="px-4 py-3 text-black hover:underline cursor-pointer">
-                                                    {item?.import_type === "upload_file" ? "Upload File" : "Submit Form"}
+                                                    {item?.import_type === "upload_file" && (
+                                                        <span className="flex items-center gap-2">
+                                                            <Upload className="h-4 w-4" /> Upload File
+                                                        </span>
+                                                    )}
+                                                    {item?.import_type === "json_data" && (
+                                                        <span className="flex items-center gap-2">
+                                                            <File className="h-4 w-4" /> Submit Form
+                                                        </span>
+                                                    )}
                                                 </td>
                                                 <td className="px-4 py-3 text-black">
                                                     {item?.file_path ? <Link className="hover:underline cursor-pointer" target="_blank" href={item?.file_path}>{item?.file_path}</Link> : "-"}
