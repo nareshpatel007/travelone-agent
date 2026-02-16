@@ -65,10 +65,10 @@ export function LoginPage() {
         <div className="max-w-2xl mx-auto px-5 md:px-0 flex flex-col justify-center py-24 md:py-30 space-y-6">
             <div className="text-center px-4 space-y-2">
                 <h1 className="text-black text-2xl md:text-3xl leading-tight font-medium">
-                    Log In to your supplier account
+                    Log In to your agent account
                 </h1>
                 <p className="text-gray-600 text-base md:text-lg">
-                    Enter your email address and password to log in to your supplier account.
+                    Enter your email address and password to log in to your agent account.
                 </p>
             </div>
             <div className="rounded-xl p-8 border border-gray-200 space-y-5">
