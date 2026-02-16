@@ -2,8 +2,8 @@ import Script from "next/script";
 
 // Set metadata
 export const metadata = {
-    title: "TravelOne Supplier",
-    description: "TravelOne Supplier",
+    title: "TravelOne Agent",
+    description: "TravelOne Agent",
     icons: {
         icon: "https://ik.imagekit.io/288weifiq/nextjs/to-favicon.png"
     },
