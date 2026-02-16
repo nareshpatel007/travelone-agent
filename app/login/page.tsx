@@ -15,7 +15,7 @@ export default function Page() {
     const [ready, setReady] = useState(false);
 
     // Is auth login
-    const isLoginUser = isLoggedIn();
+    const isLoginUser = isLoggedIn() as boolean || false;
 
     // If already login
     if (isLoginUser) {
