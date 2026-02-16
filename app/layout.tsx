@@ -4,6 +4,9 @@ import Script from "next/script";
 export const metadata = {
     title: "TravelOne Supplier",
     description: "TravelOne Supplier",
+    icons: {
+        icon: "https://ik.imagekit.io/288weifiq/nextjs/to-favicon.png"
+    },
 };
 
 export default function RootLayout({
