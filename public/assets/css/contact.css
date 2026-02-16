@@ -1,0 +1,153 @@
+.error404 #qodef-page-inner #qodef-page-content {
+    height: calc(100vh - 145px);
+}
+
+@media only screen and (max-width: 1024px) {
+    .error404 #qodef-page-inner #qodef-page-content {
+        height: calc(100vh - 70px);
+    }
+}
+
+@font-face {
+    font-family: Tesla;
+    src: url(https://wanderaway.qodeinteractive.com/wp-content/uploads/2023/08/TESLA.otf) format("truetype");
+}
+
+#qodef-page-footer-top-area {
+    background-color: rgb(252, 239, 223);
+}
+
+#qodef-page-footer-bottom-area {
+    background-color: rgb(252, 239, 223);
+}
+
+#qodef-page-inner {
+    padding: 0 0;
+}
+
+@media only screen and (max-width: 1024px) {
+    #qodef-page-inner {
+        padding: 0 0;
+    }
+}
+
+#qodef-top-area {
+    background-color: rgb(254, 244, 228);
+}
+
+#qodef-top-area-inner {
+    height: 45px;
+}
+
+#qodef-page-header .qodef-header-logo-link {
+    height: 70px;
+}
+
+#qodef-page-mobile-header .qodef-mobile-header-logo-link {
+    height: 40px;
+}
+
+#qodef-page-spinner .qodef-m-inner {
+    color: rgb(255, 255, 255);
+}
+
+.qodef-page-title {
+    height: 388px;
+    background-color: rgb(255, 255, 255);
+    background-image: url(https://wanderaway.qodeinteractive.com/wp-content/uploads/2023/11/contact-img-01.jpg);
+}
+
+.qodef-page-title .qodef-m-title {
+    color: rgb(255, 255, 255);
+}
+
+@media only screen and (max-width: 1440px) {
+    .qodef-page-title {
+        height: 350px;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .qodef-page-title {
+        height: 300px;
+    }
+}
+
+.qodef-header--standard #qodef-page-header {
+    height: 100px;
+}
+
+.qodef-header--standard #qodef-page-header {
+    border-bottom-color: rgba(255, 255, 255, 0);
+    border-bottom-width: 1px;
+}
+
+@media only screen and (max-width: 1024px) {
+
+    h4,
+    .qodef-h4,
+    h4.elementor-heading-title {
+        font-size: 20px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+
+    h3,
+    .qodef-h3,
+    h3.elementor-heading-title {
+        font-size: 30px;
+    }
+}
+
+.wp-block-button__link {
+    color: #fff;
+    background-color: #32373c;
+    border-radius: 9999px;
+    box-shadow: none;
+    text-decoration: none;
+    padding: calc(.667em + 2px) calc(1.333em + 2px);
+    font-size: 1.125em
+}
+
+.wp-block-file__button {
+    background: #32373c;
+    color: #fff;
+    text-decoration: none
+}
+
+body .qodef-widget-block-45fbf6b4 .qi-block-single-image {
+    text-align: center;
+}
+
+body .qodef-template-block-0531ecbe .qi-block-section-title {
+    text-align: center;
+}
+
+body .qodef-template-block-0531ecbe .qi-block-section-title .qodef-m-title {
+    color: rgba(178, 178, 178, 1);
+}
+
+body .qodef-template-block-6053320d .qi-block-icon-with-text .qi-block-divider:not(.qodef-separator--border-image) .qodef-m-line {
+    border-style: solid;
+}
+
+body .qodef-template-block-6053320d .qi-block-icon-with-text .qodef-separator--border-image .qodef-m-line {
+    background-size: auto;
+    background-position: left;
+    background-repeat: round;
+}
+
+body .qodef-template-block-a41ea50b .qi-block-icon-with-text .qodef-m-icon-wrapper {
+    margin-right: 20px;
+}
+
+body .qodef-template-block-a41ea50b .qi-block-icon-with-text .qi-block-divider:not(.qodef-separator--border-image) .qodef-m-line {
+    border-style: solid;
+}
+
+body .qodef-template-block-a41ea50b .qi-block-icon-with-text .qodef-separator--border-image .qodef-m-line {
+    background-size: auto;
+    background-position: left;
+    background-repeat: round;
+}
