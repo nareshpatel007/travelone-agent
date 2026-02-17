@@ -7,7 +7,6 @@ import StepThemes from "./common/StepThemes";
 import StepRegions from "./common/StepRegions";
 import StepDays from "./common/StepDays";
 import StepBudget from "./common/StepBudget";
-import StepAccommodation from "./common/StepAccommodation";
 import StepMeals from "./common/StepMeals";
 import StepTransfer from "./common/StepTransfer";
 import StepGuide from "./common/StepGuide";
@@ -38,7 +37,6 @@ const defaultFormData = {
     selected_cities: [],
     day_option: "7 - 10 Days (The Essential Experience)",
     budget: "$3000 - $5000 USD (Affordable Private Experience)",
-    accommodation: "Budgeted 4 Star",
     meal_preferences: [],
     transportation: "",
     guide: "",
@@ -148,12 +146,6 @@ export function CommonPlanTripModal({ open, onOpenChange }: Props) {
                     newErrors = "Please select a budget.";
                 }
                 break;
-
-            case "accommodation":
-                if (!planYourTripForm.accommodation) {
-                    newErrors = "Please select accommodation preference.";
-                }
-                break;
         }
 
         // Set errors
@@ -235,7 +227,6 @@ export function CommonPlanTripModal({ open, onOpenChange }: Props) {
             "themes_single",
             "days",
             "budget",
-            "accommodation",
             "meals",
             "transfer",
             "guide",
@@ -257,7 +248,6 @@ export function CommonPlanTripModal({ open, onOpenChange }: Props) {
             regions: StepRegions,
             days: StepDays,
             budget: StepBudget,
-            accommodation: StepAccommodation,
             meals: StepMeals,
             transfer: StepTransfer,
             guide: StepGuide,
