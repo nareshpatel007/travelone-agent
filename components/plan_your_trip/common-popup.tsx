@@ -36,7 +36,6 @@ const defaultFormData = {
     cities_options: [],
     selected_cities: [],
     day_option: "7 - 10 Days (The Essential Experience)",
-    budget: "$3000 - $5000 USD (Affordable Private Experience)",
     meal_preferences: [],
     transportation: "",
     guide: "",
@@ -52,12 +51,6 @@ export function CommonPlanTripModal({ open, onOpenChange }: Props) {
     const [formLoader, setFormLoader] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [importToken, setImportToken] = useState("");
-
-    useEffect(() => {
-        if (planYourTripForm.choose_flow) {
-            setStep(1);
-        }
-    }, [planYourTripForm.choose_flow]);
 
     // Handle close
     const handleClose = () => {
@@ -140,12 +133,6 @@ export function CommonPlanTripModal({ open, onOpenChange }: Props) {
                     newErrors = "Please select trip duration.";
                 }
                 break;
-
-            case "budget":
-                if (!planYourTripForm.budget) {
-                    newErrors = "Please select a budget.";
-                }
-                break;
         }
 
         // Set errors
@@ -226,7 +213,6 @@ export function CommonPlanTripModal({ open, onOpenChange }: Props) {
             "regions",
             "themes_single",
             "days",
-            "budget",
             "meals",
             "transfer",
             "guide",
@@ -247,7 +233,6 @@ export function CommonPlanTripModal({ open, onOpenChange }: Props) {
             themes_single: StepThemes,
             regions: StepRegions,
             days: StepDays,
-            budget: StepBudget,
             meals: StepMeals,
             transfer: StepTransfer,
             guide: StepGuide,

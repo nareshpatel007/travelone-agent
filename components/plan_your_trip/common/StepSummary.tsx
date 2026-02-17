@@ -55,12 +55,6 @@ let SUMMARY_CONFIG = [
         isAnswered: (form: any) => !!form.day_option,
     },
     {
-        label: "Budget",
-        stepKey: "budget",
-        shouldShow: () => true,
-        isAnswered: (form: any) => !!form.budget,
-    },
-    {
         label: "Meals",
         stepKey: "meals",
         shouldShow: () => true,
