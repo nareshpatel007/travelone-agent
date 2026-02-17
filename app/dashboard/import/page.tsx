@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import CommonFooter from "@/components/footer/common-footer";
 import CommonHeader from "@/components/header/common-header";
-import { AlertCircle, ExternalLink, File, List, RefreshCcw, Upload } from "lucide-react";
+import { AlertCircle, ExternalLink, File, List, MoveRight, RefreshCcw, Upload } from "lucide-react";
 import { CommonPlanTripModal } from "@/components/plan_your_trip/common-popup";
 import { UploadImportModal } from "@/components/plan_your_trip/upload-import";
 import Link from "next/link";
@@ -164,7 +164,7 @@ export default function Page() {
                                                             <span className="flex items-center gap-2">
                                                                 {jsonData?.choose_flow === "i_have_destination" && (
                                                                     <>
-                                                                        {jsonData?.destination} - {jsonData?.country?.join(", ")}
+                                                                        {jsonData?.destination} <MoveRight className="h-4 w-4" /> {jsonData?.country?.join(", ")}
                                                                     </>
                                                                 )}
                                                             </span>
