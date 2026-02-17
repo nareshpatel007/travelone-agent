@@ -140,7 +140,7 @@ export default function Page() {
                                     <tbody>
                                         {importList.map((item: any, index: number) => {
                                             // Json parsed
-                                            const jsonData = item?.json_data ?? null;
+                                            const jsonData = item?.json_data ? JSON.parse(item.json_data) : null;
 
                                             return (
                                                 <tr key={index} className="text-sm border-t border-[#d9cec1] hover:bg-gray-50">
