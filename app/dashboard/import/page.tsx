@@ -3,11 +3,12 @@
 import { useEffect, useState } from "react";
 import CommonFooter from "@/components/footer/common-footer";
 import CommonHeader from "@/components/header/common-header";
-import { AlertCircle, File, Form, List, Play, PlaySquare, RefreshCcw, Upload } from "lucide-react";
+import { AlertCircle, ExternalLink, File, List, RefreshCcw, Upload } from "lucide-react";
 import { CommonPlanTripModal } from "@/components/plan_your_trip/common-popup";
 import { UploadImportModal } from "@/components/plan_your_trip/upload-import";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
+import { isLoggedIn } from "@/lib/auth";
 
 export default function Page() {
     // Define state
@@ -17,7 +18,11 @@ export default function Page() {
     const [openUploadImportFile, setOpenUploadImportFile] = useState<boolean>(false);
     const [importList, setImportList] = useState<any>([]);
 
+    // Check login and set ready
     useEffect(() => {
+        if (!isLoggedIn()) {
+            window.location.href = "/login";
+        }
         requestAnimationFrame(() => { setReady(true); });
     }, []);
 
@@ -67,7 +72,7 @@ export default function Page() {
 
             <div className="flex">
                 <div className="flex-1 p-8 space-y-8">
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Upload using PDF File */}
                         <div className="bg-[#FFF9EE] p-6 border border-[#d9cec1] rounded-sm space-y-4">
                             <h3 className="font-semibold text-black">
@@ -105,13 +110,13 @@ export default function Page() {
                         </div>
                     </div>
                     <div className="rounded-sm overflow-hidden">
-                        <div className="flex items-center gap-2 bg-black text-white px-6 py-3 text-sm md:text-base font-medium">
+                        <div className="flex items-center gap-2 bg-black border border-black text-white px-6 py-3 text-sm md:text-base font-medium">
                             <List className="h-4 w-4" /> Import Logs
                         </div>
-                        <div className="overflow-x-auto">
+                        <div className="border border-[#d9cec1] overflow-x-auto">
                             {/* Loader */}
                             {isLoading && (
-                                <div className="border border-[#d9cec1] grid grid-cols-1 p-5 space-y-4">
+                                <div className="grid grid-cols-1 p-5 space-y-4">
                                     {Array.from({ length: 4 }).map((_, i) => (
                                         <div
                                             key={i}
@@ -123,16 +128,16 @@ export default function Page() {
 
                             {!isLoading && importList.length > 0 && (
                                 <table className="w-full text-sm">
-                                    <thead className="bg-[#FFF9EE] border border-[#d9cec1] text-left">
+                                    <thead className="bg-[#FFF9EE] text-left">
                                         <tr className="text-sm">
                                             <th className="px-4 py-3 font-semibold">Import Type</th>
                                             <th className="px-4 py-3 font-semibold">File Path</th>
                                             <th className="px-4 py-3 font-semibold">Status</th>
                                             <th className="px-4 py-3 font-semibold">Created Date</th>
-                                            {/* <th className="px-4 py-3 font-semibold">Action</th> */}
+                                            <th className="px-4 py-3 font-semibold">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody className="border border-[#d9cec1]">
+                                    <tbody>
                                         {importList.map((item: any, index: number) => (
                                             <tr key={index} className="text-sm border-t border-[#d9cec1] hover:bg-gray-50">
                                                 <td className="px-4 py-3 text-black hover:underline cursor-pointer">
@@ -157,18 +162,27 @@ export default function Page() {
                                                         </span>
                                                     )}
                                                     {item?.status === 'pending' && (
-                                                        <span className="bg-amber-500 text-white px-2 py-1 rounded text-xs">
+                                                        <span className="bg-red-500 text-white px-2 py-1 rounded text-xs">
                                                             Pending
                                                         </span>
                                                     )}
                                                     {item?.status === 'processing' && (
-                                                        <span className="bg-red-500 text-white px-2 py-1 rounded text-xs">
+                                                        <span className="bg-amber-500 text-white px-2 py-1 rounded text-xs">
                                                             Processing
                                                         </span>
                                                     )}
                                                 </td>
                                                 <td className="px-4 py-3">
                                                     {formatDate(item?.created_at)}
+                                                </td>
+                                                <td className="px-4 py-3">
+                                                    {item?.tour_slug && (
+                                                        <Link href={`https://travelone.io/tour/${item?.tour_slug}`} target="_blank">
+                                                            <button className="flex items-center gap-2 text-sm bg-black text-white px-3 py-1.5 rounded hover:underline cursor-pointer hover:bg-black/90">
+                                                                Preview Tour <ExternalLink className="h-4 w-4" />
+                                                            </button>
+                                                        </Link>
+                                                    )}
                                                 </td>
                                             </tr>
                                         ))}

@@ -5,6 +5,7 @@ import { CheckCircle, ChevronDown, ExternalLink } from 'lucide-react'
 import CommonHeader from '@/components/header/common-header'
 import CommonFooter from '@/components/footer/common-footer'
 import Image from 'next/image'
+import { isLoggedIn } from '@/lib/auth'
 
 // Define destination regions
 const DESTINATION_REGIONS = [
@@ -81,7 +82,11 @@ export default function CreateTourPage() {
         listingType: 'Instant Booking'
     });
 
+    // Check login and set ready
     useEffect(() => {
+        if (!isLoggedIn()) {
+            window.location.href = "/login";
+        }
         requestAnimationFrame(() => { setReady(true); });
     }, []);
 

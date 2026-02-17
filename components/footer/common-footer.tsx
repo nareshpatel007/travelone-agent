@@ -4,12 +4,7 @@ import { useState, useEffect } from 'react';
 import { ChevronUp } from 'lucide-react';
 import Link from 'next/link';
 
-// Define props
-type Props = {
-    isStickyShow?: boolean
-};
-
-export default function CommonFooter({ isStickyShow = false }: Props) {
+export default function CommonFooter() {
     // Define state
     const [isVisible, setIsVisible] = useState(false);
 
@@ -120,8 +115,9 @@ export default function CommonFooter({ isStickyShow = false }: Props) {
                     </div>
 
                     {/* COPYRIGHT */}
-                    <div className={`text-center text-gray-900 text-sm md:text-base pt-5 md:pt-0 ${isStickyShow ? 'mb-0 sm:mb-10' : ''}`}>
-                        © Copyright {new Date().getFullYear()} TravelOne Technologies Inc. | All Rights Reserved.
+                    <div className="text-center text-gray-900 text-sm md:text-base space-y-2 pt-5 md:pt-0">
+                        <p className='text-xs md:text-sm'>We operate Canada based business under Century Travel Services - TICO - 2856798</p>
+                        <p>© Copyright {new Date().getFullYear()} TravelOne Technologies Inc. | All Rights Reserved.</p>
                     </div>
                 </div>
 
@@ -129,7 +125,7 @@ export default function CommonFooter({ isStickyShow = false }: Props) {
                 {isVisible && (
                     <button
                         onClick={scrollToTop}
-                        className={`fixed ${isStickyShow ? 'bottom-10 md:bottom-20' : 'bottom-5 md:bottom-8'} right-4 md:right-8 bg-black text-white rounded-full p-3 shadow-lg hover:bg-gray-900 transition z-50 cursor-pointer`}
+                        className="fixed bottom-5 md:bottom-8 right-4 md:right-8 bg-black text-white rounded-full p-3 shadow-lg hover:bg-gray-900 transition z-50 cursor-pointer"
                         aria-label="Scroll to top"
                     >
                         <ChevronUp size={24} />

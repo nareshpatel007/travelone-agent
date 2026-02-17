@@ -5,6 +5,7 @@ import CommonFooter from "@/components/footer/common-footer";
 import CommonHeader from "@/components/header/common-header";
 import PageHeading from "@/components/common/page-heading";
 import { TourCard } from "@/components/tours/tour-card";
+import { isLoggedIn } from "@/lib/auth";
 
 export default function Page() {
     // Define state
@@ -12,7 +13,11 @@ export default function Page() {
     const [isLoading, setIsLoading] = useState(false);
     const [tourData, setTourData] = useState<any>([]);
 
+    // Check login and set ready
     useEffect(() => {
+        if (!isLoggedIn()) {
+            window.location.href = "/login";
+        }
         requestAnimationFrame(() => { setReady(true); });
     }, []);
 
