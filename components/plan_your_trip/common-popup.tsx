@@ -7,7 +7,6 @@ import StepThemes from "./common/StepThemes";
 import StepRegions from "./common/StepRegions";
 import StepDays from "./common/StepDays";
 import StepBudget from "./common/StepBudget";
-import StepTravelers from "./common/StepTravelers";
 import StepAccommodation from "./common/StepAccommodation";
 import StepMeals from "./common/StepMeals";
 import StepTransfer from "./common/StepTransfer";
@@ -39,25 +38,6 @@ const defaultFormData = {
     selected_cities: [],
     day_option: "7 - 10 Days (The Essential Experience)",
     budget: "$3000 - $5000 USD (Affordable Private Experience)",
-    prefer_travel_type: "family",
-    family_friends: {
-        adults: 2,
-        child_8_12: 0,
-        child_3_7: 0,
-        infant: 0,
-        is_women_only: false
-    },
-    groups: {
-        adults: 2,
-        child_8_12: 0,
-        child_3_7: 0,
-        infant: 0,
-        is_women_only: false
-    },
-    solo: {
-        adults: 1,
-        is_women_only: false
-    },
     accommodation: "Budgeted 4 Star",
     meal_preferences: [],
     transportation: "",
@@ -169,12 +149,6 @@ export function CommonPlanTripModal({ open, onOpenChange }: Props) {
                 }
                 break;
 
-            case "travelers":
-                if (!planYourTripForm.prefer_travel_type) {
-                    newErrors = "Please select travelers.";
-                }
-                break;
-
             case "accommodation":
                 if (!planYourTripForm.accommodation) {
                     newErrors = "Please select accommodation preference.";
@@ -261,7 +235,6 @@ export function CommonPlanTripModal({ open, onOpenChange }: Props) {
             "themes_single",
             "days",
             "budget",
-            "travelers",
             "accommodation",
             "meals",
             "transfer",
@@ -284,7 +257,6 @@ export function CommonPlanTripModal({ open, onOpenChange }: Props) {
             regions: StepRegions,
             days: StepDays,
             budget: StepBudget,
-            travelers: StepTravelers,
             accommodation: StepAccommodation,
             meals: StepMeals,
             transfer: StepTransfer,
