@@ -61,18 +61,6 @@ let SUMMARY_CONFIG = [
         isAnswered: (form: any) => !!form.budget,
     },
     {
-        label: "Travelers",
-        stepKey: "travelers",
-        shouldShow: () => true,
-        isAnswered: (form: any) => !!form.prefer_travel_type,
-    },
-    {
-        label: "Accommodation",
-        stepKey: "accommodation",
-        shouldShow: () => true,
-        isAnswered: (form: any) => !!form.accommodation,
-    },
-    {
         label: "Meals",
         stepKey: "meals",
         shouldShow: () => true,
