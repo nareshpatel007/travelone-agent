@@ -96,7 +96,7 @@ export default function CountDownStep({ isSubmitted, token }: Props) {
                         </div>
 
                         <h1 className="text-2xl font-bold text-gray-800">
-                            Generating Your Tour...
+                            {timeLeft <= 100 ? "Generating Your Tour..." : "Analyzing Your Request..."}
                         </h1>
 
                         <p className="text-gray-500 text-sm max-w-md">
