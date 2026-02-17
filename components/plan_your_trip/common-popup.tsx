@@ -57,6 +57,8 @@ export function CommonPlanTripModal({ open, onOpenChange }: Props) {
         setStep(0);
         setErrors("");
         setPlanYourTripForm(defaultFormData);
+        setIsSubmitted(false);
+        setImportToken("");
         onOpenChange(false);
     }
 
