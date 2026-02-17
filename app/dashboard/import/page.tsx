@@ -131,61 +131,77 @@ export default function Page() {
                                     <thead className="bg-[#FFF9EE] text-left">
                                         <tr className="text-sm">
                                             <th className="px-4 py-3 font-semibold">Import Type</th>
-                                            <th className="px-4 py-3 font-semibold">File Path</th>
+                                            <th className="px-4 py-3 font-semibold">File Path / JSON Data</th>
                                             <th className="px-4 py-3 font-semibold">Status</th>
                                             <th className="px-4 py-3 font-semibold">Created Date</th>
                                             <th className="px-4 py-3 font-semibold">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {importList.map((item: any, index: number) => (
-                                            <tr key={index} className="text-sm border-t border-[#d9cec1] hover:bg-gray-50">
-                                                <td className="px-4 py-3 text-black hover:underline cursor-pointer">
-                                                    {item?.import_type === "upload_file" && (
-                                                        <span className="flex items-center gap-2">
-                                                            <Upload className="h-4 w-4" /> Upload File
-                                                        </span>
-                                                    )}
-                                                    {item?.import_type === "json_data" && (
-                                                        <span className="flex items-center gap-2">
-                                                            <File className="h-4 w-4" /> Submit Form
-                                                        </span>
-                                                    )}
-                                                </td>
-                                                <td className="px-4 py-3 text-black">
-                                                    {item?.file_path ? <Link className="hover:underline cursor-pointer" target="_blank" href={item?.file_path}>{item?.file_path}</Link> : "-"}
-                                                </td>
-                                                <td className="px-4 py-3">
-                                                    {item?.status === 'imported' && (
-                                                        <span className="bg-green-600 text-white px-2 py-1 rounded text-xs">
-                                                            Imported
-                                                        </span>
-                                                    )}
-                                                    {item?.status === 'pending' && (
-                                                        <span className="bg-red-500 text-white px-2 py-1 rounded text-xs">
-                                                            Pending
-                                                        </span>
-                                                    )}
-                                                    {item?.status === 'processing' && (
-                                                        <span className="bg-amber-500 text-white px-2 py-1 rounded text-xs">
-                                                            Processing
-                                                        </span>
-                                                    )}
-                                                </td>
-                                                <td className="px-4 py-3">
-                                                    {formatDate(item?.created_at)}
-                                                </td>
-                                                <td className="px-4 py-3">
-                                                    {item?.tour_slug && (
-                                                        <Link href={`https://travelone.io/tour/${item?.tour_slug}`} target="_blank">
-                                                            <button className="flex items-center gap-2 text-sm bg-black text-white px-3 py-1.5 rounded hover:underline cursor-pointer hover:bg-black/90">
-                                                                Preview Tour <ExternalLink className="h-4 w-4" />
-                                                            </button>
-                                                        </Link>
-                                                    )}
-                                                </td>
-                                            </tr>
-                                        ))}
+                                        {importList.map((item: any, index: number) => {
+                                            // Json parsed
+                                            const jsonData = item?.json_data ? JSON.parse(item.json_data) : null;
+
+                                            return (
+                                                <tr key={index} className="text-sm border-t border-[#d9cec1] hover:bg-gray-50">
+                                                    <td className="px-4 py-3 text-black hover:underline cursor-pointer">
+                                                        {item?.import_type === "upload_file" ? (
+                                                            <span className="flex items-center gap-2">
+                                                                <Upload className="h-4 w-4" /> Upload File
+                                                            </span>
+                                                        ) : (
+                                                            <span className="flex items-center gap-2">
+                                                                <File className="h-4 w-4" /> Submit Form
+                                                            </span>
+                                                        )}
+                                                    </td>
+                                                    <td className="px-4 py-3 text-black">
+                                                        {item?.import_type === "upload_file" ? (
+                                                            <Link className="hover:underline cursor-pointer" target="_blank" href={item?.file_path}>
+                                                                {item?.file_path}
+                                                            </Link>
+                                                        ) : (
+                                                            <span className="flex items-center gap-2">
+                                                                {jsonData?.choose_flow === "i_have_destination" && (
+                                                                    <>
+                                                                        {jsonData?.destination} - {jsonData?.country?.join(", ")}
+                                                                    </>
+                                                                )}
+                                                            </span>
+                                                        )}
+                                                    </td>
+                                                    <td className="px-4 py-3">
+                                                        {item?.status === 'imported' && (
+                                                            <span className="bg-green-600 text-white px-2 py-1 rounded text-xs">
+                                                                Imported
+                                                            </span>
+                                                        )}
+                                                        {item?.status === 'pending' && (
+                                                            <span className="bg-red-500 text-white px-2 py-1 rounded text-xs">
+                                                                Pending
+                                                            </span>
+                                                        )}
+                                                        {item?.status === 'processing' && (
+                                                            <span className="bg-amber-500 text-white px-2 py-1 rounded text-xs">
+                                                                Processing
+                                                            </span>
+                                                        )}
+                                                    </td>
+                                                    <td className="px-4 py-3">
+                                                        {formatDate(item?.created_at)}
+                                                    </td>
+                                                    <td className="px-4 py-3">
+                                                        {item?.tour_slug && (
+                                                            <Link href={`https://travelone.io/tour/${item?.tour_slug}`} target="_blank">
+                                                                <button className="flex items-center gap-2 text-sm bg-black text-white px-3 py-1.5 rounded hover:underline cursor-pointer hover:bg-black/90">
+                                                                    Preview Tour <ExternalLink className="h-4 w-4" />
+                                                                </button>
+                                                            </Link>
+                                                        )}
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
                                     </tbody>
                                 </table>
                             )}
