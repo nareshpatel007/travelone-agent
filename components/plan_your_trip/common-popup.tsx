@@ -1,12 +1,11 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import StepFirstVisit from "./common/StepFirstVisit";
 import StepTravelTime from "./common/StepTravelTime";
 import StepThemes from "./common/StepThemes";
 import StepRegions from "./common/StepRegions";
 import StepDays from "./common/StepDays";
-import StepBudget from "./common/StepBudget";
 import StepMeals from "./common/StepMeals";
 import StepTransfer from "./common/StepTransfer";
 import StepGuide from "./common/StepGuide";
@@ -17,6 +16,7 @@ import ChoosePytFlow from "./common/ChoosePytFlow";
 import StepDestinations from "./common/StepDestinations";
 import StepCustomPrompt from "./common/StepCustomPrompt";
 import CountDownStep from "./common/CountDownStep";
+import StepCitiesActivities from "./common/StepCitiesActivities";
 
 // Define interface
 interface Props {
@@ -35,6 +35,7 @@ const defaultFormData = {
     themes_options: [],
     cities_options: [],
     selected_cities: [],
+    cities_activities: [],
     day_option: "7 - 10 Days (The Essential Experience)",
     meal_preferences: [],
     transportation: "",
@@ -213,6 +214,7 @@ export function CommonPlanTripModal({ open, onOpenChange }: Props) {
             "first_visit",
             "travel_time",
             "regions",
+            "cities_activities",
             "themes_single",
             "days",
             "meals",
@@ -234,6 +236,7 @@ export function CommonPlanTripModal({ open, onOpenChange }: Props) {
             travel_time: StepTravelTime,
             themes_single: StepThemes,
             regions: StepRegions,
+            cities_activities: StepCitiesActivities,
             days: StepDays,
             meals: StepMeals,
             transfer: StepTransfer,

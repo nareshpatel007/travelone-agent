@@ -388,6 +388,7 @@ export default function StepRegions({
             ...form,
             cities_options: regions,
             selected_cities: cities,
+            cities_activities: {},
         }));
     };
 
