@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import CommonFooter from "@/components/footer/common-footer";
 import CommonHeader from "@/components/header/common-header";
-import { AlertCircle, ExternalLink, File, List, MoveRight, RefreshCcw, Upload } from "lucide-react";
+import { AlertCircle, Edit, ExternalLink, File, List, MoveRight, RefreshCcw, Upload } from "lucide-react";
 import { CommonPlanTripModal } from "@/components/plan_your_trip/common-popup";
 import { UploadImportModal } from "@/components/plan_your_trip/upload-import";
 import Link from "next/link";
@@ -190,14 +190,20 @@ export default function Page() {
                                                     <td className="px-4 py-3">
                                                         {formatDate(item?.created_at)}
                                                     </td>
-                                                    <td className="px-4 py-3">
+                                                    <td className="flex gap-2 px-4 py-3">
                                                         {item?.tour_slug && (
-                                                            <Link href={`https://travelone.io/tour/${item?.tour_slug}`} target="_blank">
-                                                                <button className="flex items-center gap-2 text-sm bg-black text-white px-3 py-1.5 rounded hover:underline cursor-pointer hover:bg-black/90">
-                                                                    Preview Tour <ExternalLink className="h-4 w-4" />
-                                                                </button>
-                                                            </Link>
-                                                        )}
+                                                            <>
+                                                                <Link href={`https://travelone.io/tour/${item?.tour_slug}`} target="_blank">
+                                                                    <button className="flex items-center gap-2 text-sm bg-black text-white px-3 py-1.5 rounded hover:underline cursor-pointer hover:bg-black/90">
+                                                                        Preview Tour <ExternalLink className="h-4 w-4" />
+                                                                    </button>
+                                                                </Link>
+                                                                <Link href={`/dashboard/my-tours/basic-edit/${item?.tour_id}`} target="_blank">
+                                                                    <button className="flex items-center gap-2 text-sm bg-black text-white px-3 py-1.5 rounded hover:underline cursor-pointer hover:bg-black/90">
+                                                                        <Edit className="h-4 w-4" /> Edit
+                                                                    </button>
+                                                                </Link>
+                                                            </>)}
                                                     </td>
                                                 </tr>
                                             );
