@@ -49,6 +49,12 @@ let SUMMARY_CONFIG = [
         isAnswered: (form: any) => Array.isArray(form.selected_cities) && form.selected_cities.length > 0,
     },
     {
+        label: "Activities Selection",
+        stepKey: "cities_activities",
+        shouldShow: (form: any) => form.choose_flow === "i_have_destination",
+        isAnswered: (form: any) => Object.keys(form.cities_activities || {}).length > 0,
+    },
+    {
         label: "Trip duration",
         stepKey: "days",
         shouldShow: () => true,
@@ -93,7 +99,6 @@ export default function StepSummary({
     jumpToStep,
     isLandingPage = false,
 }: Props) {
-
     // If landing page remove countries and destination from list, remove item key
     if (isLandingPage) {
         // If stepKey == "choose_flow" remove

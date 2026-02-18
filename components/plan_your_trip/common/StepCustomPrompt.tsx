@@ -1,6 +1,5 @@
 "use client";
-import { Check } from "lucide-react";
-import { useEffect, useState } from "react";
+
 import QuestionHeading from "./questionHeading";
 import { Textarea } from "@/components/ui/textarea";
 
