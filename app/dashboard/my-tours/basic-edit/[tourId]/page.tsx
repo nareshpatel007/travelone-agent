@@ -8,11 +8,13 @@ import { getLoginCookie, isLoggedIn } from '@/lib/auth';
 import Link from 'next/link';
 import PackageOptions from '@/components/dashboard/edit-tour/package-options';
 import TourItinerary from '@/components/dashboard/edit-tour/tour-itinerary';
+import Highlights from '@/components/dashboard/edit-tour/highlights';
 
 // Define tabs
 const tabs = [
     // { label: "Basic Info", value: "basic_info" },
     // { label: "Highlights", value: "highlights" },
+    // { label: "Group Dates", value: "group_dates" },
     // { label: "Media Gallery", value: "media_gallery" },
     // { label: "SEO Details", value: "seo_details" },
     { label: "Package Options", value: "package_options" },
@@ -90,7 +92,7 @@ export default function Page({ params }: Props) {
         <>
             <CommonHeader />
 
-            <div className="bg-white">
+            <div className="bg-gray-50">
                 {isLoading && (
                     <div className="max-w-7xl mx-auto py-7 grid grid-cols-1 space-y-5">
                         <div className="animate-pulse bg-gray-200 rounded-lg h-30"></div>
@@ -101,7 +103,7 @@ export default function Page({ params }: Props) {
 
                 {!isLoading && tourData && (
                     <>
-                        <div className="bg-[#FFF9EE] border-b-2 border-[#d9cec1] sticky top-0 z-50">
+                        <div className="bg-[#FFF9EE] border-b-2 border-[#d9cec1] z-50">
                             <div className="max-w-7xl mx-auto py-4 flex items-center justify-between">
                                 <div className="flex-1">
                                     Edit tour for <span className="font-bold text-black">"{tourData?.tour?.name}"</span>
@@ -118,13 +120,13 @@ export default function Page({ params }: Props) {
 
                         {/* Steps */}
                         <div className="max-w-7xl mx-auto py-4">
-                            <div className="border-b border-gray-200">
-                                <div className="flex gap-8 overflow-x-auto">
+                            <div className="bg-white rounded shadow-sm space-y-6 border-b border-gray-200">
+                                <div className="flex overflow-x-auto">
                                     {tabs.map((tab) => (
                                         <button
                                             key={tab.value}
                                             onClick={() => setActiveTab(tab.value)}
-                                            className="relative py-3 text-sm font-medium whitespace-nowrap transition cursor-pointer flex-shrink-0"
+                                            className="relative py-3 px-4 text-base font-medium whitespace-nowrap transition cursor-pointer flex-shrink-0"
                                         >
                                             <span className={activeTab === tab.value ? "text-black" : "text-gray-500 hover:text-black"}>
                                                 {tab.label}
@@ -139,13 +141,19 @@ export default function Page({ params }: Props) {
                             </div>
                         </div>
 
-                        {/* Tab Content */}
+                        {/* Tab for Highlights */}
+                        {activeTab === "highlights" && <Highlights
+                            tourId={tourData?.tour?.id}
+                            highlights={tourData?.tour?.tour_highlights ?? []}
+                        />}
+
+                        {/* Tab for Package Options */}
                         {activeTab === "package_options" && <PackageOptions
                             tourId={tourData?.tour?.id}
                             packages={tourData?.packages ?? []}
                         />}
 
-                        {/* Step for Attraction Update */}
+                        {/* Tab for Tour Itinerary */}
                         {activeTab === "tour_itinerary" && <TourItinerary
                             tourId={tourData?.tour?.id}
                             countries={tourData?.countries ?? []}
