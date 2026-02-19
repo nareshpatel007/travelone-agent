@@ -122,7 +122,7 @@ export default function PackageOptions({ tourId, packages }: Props) {
                         className={`rounded border transition-all duration-300 ${(isPublished && !isFormLoading) ? "bg-white" : "bg-gray-100 opacity-70"}`}
                     >
                         {/* Header */}
-                        <div className="flex justify-between items-center px-6 py-4 border-b bg-gradient-to-r from-yellow-50 to-orange-50 rounded-t-2xl">
+                        <div className="flex shadow-sm justify-between items-center px-6 py-4 border-b bg-gradient-to-r from-yellow-50 to-orange-50 rounded-t-2xl">
                             <h3 className="font-semibold text-lg text-gray-800">
                                 {pkg.package_name}
                             </h3>
