@@ -3,7 +3,7 @@
 import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { CheckCircle, Loader2, Plus, Trash2, GripVertical, CheckCircle2, X, Sparkles } from "lucide-react";
+import { CheckCircle, Loader2, Plus, Trash2, GripVertical, X, LucideImagePlus } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -19,7 +19,8 @@ function SortableLine({
     dayIndex,
     lineIndex,
     updateLineTitle,
-    removeLine
+    removeLine,
+    setSelectedAttraction
 }: any) {
     // Define styles for different line types
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: line.id });
@@ -68,12 +69,27 @@ function SortableLine({
                 className="flex-1 bg-transparent outline-none text-sm"
             />
 
+            {/* If attraction, change image */}
+            {line.type === "attraction" && (
+                <button
+                    onClick={() => {
+                        setSelectedAttraction({
+                            id: line.attraction_id,
+                            title: line.title
+                        });
+                    }}
+                    className="flex items-center gap-1 text-xs px-2 py-0.5 rounded border border-blue-600 text-blue-600 hover:text-blue-700 cursor-pointer hover:bg-blue-100 transition"
+                >
+                    <LucideImagePlus className="w-3 h-3" /> Change
+                </button>
+            )}
+
             {/* Remove */}
             <button
                 onClick={() => removeLine(dayIndex, lineIndex)}
-                className="text-red-500 hover:text-red-700 cursor-pointer"
+                className="flex items-center gap-1 text-xs px-2 py-0.5 rounded border border-red-500 text-red-500 hover:text-red-700 cursor-pointer hover:bg-red-100 transition"
             >
-                <Trash2 size={16} />
+                <Trash2 className="w-3 h-3" /> Remove
             </button>
         </div>
     );
@@ -87,6 +103,7 @@ export default function TourItinerary({ tourId, countries, itinerary }: Props) {
     const [isFormLoading, setIsFormLoading] = useState(false);
     const [message, setMessage] = useState<any>(null);
     const [selectedDayIndex, setSelectedDayIndex] = useState<number>(0);
+    const [selectedAttraction, setSelectedAttraction] = useState<any>("");
     const [openAddAttractionModal, setOpenAddAttractionModal] = useState<boolean>(false);
     const [isFormLoader, setIsFormLoader] = useState<boolean>(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -310,6 +327,87 @@ export default function TourItinerary({ tourId, countries, itinerary }: Props) {
         }
     };
 
+    // Handle change attraction image
+    const handleUpdateImage = async () => {
+        // Validation
+        if (!selectedAttraction.id || !selectedAttraction.image) {
+            setError("Please select an image.");
+            return;
+        }
+
+        try {
+            // Update state
+            setError("");
+            setIsFormLoader(true);
+
+            // Define value
+            let imageUrl = "";
+
+            // Upload image in imagekit if image is selected
+            if (selectedAttraction.image) {
+                // Define form data
+                const formData = new FormData();
+                formData.append("file", selectedAttraction.image);
+                formData.append("folder", "attractions");
+
+                // API call to upload image to ImageKit
+                const imagekitResponse = await fetch("/api/imagekit/upload", {
+                    method: "POST",
+                    body: formData
+                });
+
+                // Convert to json
+                const data = await imagekitResponse.json();
+
+                // Update form data
+                if (data?.url) {
+                    imageUrl = data.url;
+                }
+            }
+
+            // API call to create attraction
+            const response = await fetch("/api/tours/attractions/image_update", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    attraction_id: selectedAttraction.id,
+                    image: imageUrl,
+                })
+            });
+
+            // Parse JSON response
+            const result = await response.json();
+
+            // Check response and update state
+            if (result.status) {
+                // Reset data
+                setSelectedAttraction("");
+
+                // Show success message
+                setMessage({
+                    type: "success",
+                    text: 'Image updated successfully! Now click on "Save Changes" button to apply changes in itinerary.',
+                });
+
+                // Scroll to top with smooth behavior
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            } else {
+                // Set error message
+                setError("Failed to update attraction image. Please try again.");
+            }
+        } catch (error) {
+            // Set error message
+            setError("An error occurred while updating the attraction image. Please try again.");
+        } finally {
+            setIsFormLoader(false);
+        }
+
+        // Auto hide after 5 seconds
+        setTimeout(() => { setMessage(null); }, 5000);
+    };
+
     // Handle form submission
     const handleUpdate = async () => {
         try {
@@ -363,9 +461,7 @@ export default function TourItinerary({ tourId, countries, itinerary }: Props) {
         }
 
         // Auto hide after 5 seconds
-        setTimeout(() => {
-            setMessage(null);
-        }, 5000);
+        setTimeout(() => { setMessage(null); }, 5000);
     };
 
     return (
@@ -436,6 +532,7 @@ export default function TourItinerary({ tourId, countries, itinerary }: Props) {
                                             lineIndex={lineIndex}
                                             updateLineTitle={updateLineTitle}
                                             removeLine={removeLine}
+                                            setSelectedAttraction={setSelectedAttraction}
                                         />
                                     ))}
                                 </div>
@@ -612,6 +709,74 @@ export default function TourItinerary({ tourId, countries, itinerary }: Props) {
                                     Submit
                                 </button>
                             )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Change Attraction Image Modal */}
+            {selectedAttraction !== "" && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                    <div className="bg-white p-6 rounded w-full max-w-2xl space-y-4 shadow-xl">
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-xl font-semibold">
+                                Change Image for {selectedAttraction?.title}
+                            </h2>
+                        </div>
+
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) =>
+                                setSelectedAttraction({
+                                    ...selectedAttraction,
+                                    image: e.target.files?.[0] || null
+                                })
+                            }
+                            className="w-full border rounded px-3 py-2 text-sm outline-none"
+                        />
+
+                        {/* Preview upload image */}
+                        {selectedAttraction.image && (
+                            <div className="w-full h-90 border rounded overflow-hidden">
+                                <Image
+                                    src={URL.createObjectURL(selectedAttraction.image)}
+                                    alt={selectedAttraction.title}
+                                    width={500}
+                                    height={500}
+                                    draggable={false}
+                                    className="object-cover w-full h-full"
+                                />
+                            </div>
+                        )}
+
+                        {error && (
+                            <div className="px-4 py-2 bg-red-100 text-red-700 rounded text-sm">
+                                {error}
+                            </div>
+                        )}
+
+                        <div className="flex justify-end gap-2">
+                            {!isFormLoader && (
+                                <button
+                                    onClick={() => {
+                                        setSelectedAttraction("");
+                                    }}
+                                    className="flex items-center gap-1 px-4 py-1.5 border border-red-500 text-red-500 rounded text-sm cursor-pointer hover:bg-red-500 hover:text-white transition disabled:cursor-not-allowed disabled:bg-red-500/50"
+                                >
+                                    <X className="w-4 h-4" /> Cancel
+                                </button>
+                            )}
+
+                            <button
+                                onClick={handleUpdateImage}
+                                disabled={isFormLoader}
+                                className="flex items-center gap-2 px-4 py-1.5 bg-black border border-black text-white rounded cursor-pointer hover:bg-amber-300 hover:text-black text-sm disabled:cursor-not-allowed disabled:bg-black/50"
+                            >
+                                {isFormLoader && <Loader2 className="w-4 h-4 animate-spin" />}
+                                {!isFormLoader && <CheckCircle className="w-4 h-4" />}
+                                Upload Image
+                            </button>
                         </div>
                     </div>
                 </div>
