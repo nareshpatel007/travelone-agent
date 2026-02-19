@@ -54,7 +54,7 @@ const PERSONAS = [
 export default function CreateTourPage() {
     // Define state
     const [ready, setReady] = useState(false);
-    const [step, setStep] = useState(1)
+    const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         title: 'Cherry Blossom Discovery of Tokyo, Fuji, Kansai & Universal Studios Japan',
         selectedRegion: 'Asia',
@@ -119,6 +119,9 @@ export default function CreateTourPage() {
             : [...formData.selectedPersonas, persona]
         updateFormData('selectedPersonas', newPersonas)
     }
+
+    // If not ready, show loading
+    if (!ready) return null;
 
     return (
         <>
