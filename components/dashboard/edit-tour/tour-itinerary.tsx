@@ -70,7 +70,7 @@ function SortableLine({
             />
 
             {/* If attraction, change image */}
-            {line.type === "attraction" && (
+            {line.type === "attraction" && line.attraction_id && (
                 <button
                     onClick={() => {
                         setSelectedAttraction({
@@ -717,12 +717,14 @@ export default function TourItinerary({ tourId, countries, itinerary }: Props) {
             {/* Change Attraction Image Modal */}
             {selectedAttraction !== "" && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                    <div className="bg-white p-6 rounded w-full max-w-2xl space-y-4 shadow-xl">
+                    <div className="bg-white p-6 rounded w-full max-w-2xl space-y-3 shadow-xl">
                         <div className="flex items-center justify-between">
                             <h2 className="text-xl font-semibold">
-                                Change Image for {selectedAttraction?.title}
+                                Update Image for "{selectedAttraction?.title}"
                             </h2>
                         </div>
+
+                        <p className="text-sm text-gray-500">Recommended size: 500 x 500 or larger and less than 4 MB</p>
 
                         <input
                             type="file"
