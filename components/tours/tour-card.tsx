@@ -52,15 +52,13 @@ export function TourCard({
             <div className="group h-full">
                 <div className="flex h-full flex-col border border-gray-200 transition-all hover:shadow-md">
                     <div className="relative h-52 md:h-80 overflow-hidden">
-                        <Link href={`/my-tours/basic-edit/${id}`}>
-                            <Image
-                                src={featured_image || "/placeholder.svg"}
-                                alt={name}
-                                fill
-                                draggable={false}
-                                className="object-cover transition-transform duration-300 group-hover:scale-105"
-                            />
-                        </Link>
+                        <Image
+                            src={featured_image || "/placeholder.svg"}
+                            alt={name}
+                            fill
+                            draggable={false}
+                            className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
 
                         {is_ai_generated && <div className="absolute top-3 left-3 flex overflow-hidden rounded-full border border-amber-600">
                             <span
@@ -83,11 +81,9 @@ export function TourCard({
                         </div>
                     </div>
                     <div className="flex flex-1 flex-col space-y-3 p-5 text-center">
-                        <Link target="_blank" href={`/my-tours/basic-edit/${id}`}>
-                            <h2 className="line-clamp-2 text-md font-medium text-gray-900 md:text-lg">
-                                {name}
-                            </h2>
-                        </Link>
+                        <h2 className="line-clamp-2 text-md font-medium text-gray-900 md:text-lg">
+                            {name}
+                        </h2>
 
                         {tourSummary.length > 0 && (
                             <div className="text-sm text-black">
@@ -104,7 +100,7 @@ export function TourCard({
                             </button>
                         </Link>
 
-                        <Link target="_blank" href={`/dashboard/my-tours/basic-edit/${id}`}>
+                        <Link target="_blank" href={`/dashboard/my-tours/edit/${id}`}>
                             <button className="flex items-center gap-1 text-sm border border-black text-white bg-black rounded px-4 py-1 cursor-pointer hover:bg-black/90">
                                 <Edit className="h-4 w-4" /> Edit
                             </button>

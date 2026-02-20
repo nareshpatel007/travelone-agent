@@ -198,7 +198,7 @@ export default function Page() {
                                                                         Preview Tour <ExternalLink className="h-4 w-4" />
                                                                     </button>
                                                                 </Link>
-                                                                <Link href={`/dashboard/my-tours/basic-edit/${item?.tour_id}`} target="_blank">
+                                                                <Link href={`/dashboard/my-tours/edit/${item?.tour_id}`} target="_blank">
                                                                     <button className="flex items-center gap-2 text-sm bg-black text-white px-3 py-1.5 rounded hover:underline cursor-pointer hover:bg-black/90">
                                                                         <Edit className="h-4 w-4" /> Edit
                                                                     </button>
