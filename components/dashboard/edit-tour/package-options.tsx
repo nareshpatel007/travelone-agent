@@ -84,7 +84,7 @@ export default function PackageOptions({ tourId, packages }: Props) {
         <div className="max-w-7xl mx-auto py-6 space-y-6">
             <div className="flex items-center justify-between mb-4">
                 <h1 className="text-xl font-semibold text-black">
-                    Package Pricing
+                    Package Options
                 </h1>
                 <div className="flex items-center gap-4">
                     {/* Message */}

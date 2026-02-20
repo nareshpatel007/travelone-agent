@@ -7,10 +7,10 @@ import { useEffect, useState } from "react";
 // Define destinations
 const destinations = [
     { id: 42, name: "Asia", image: "https://ik.imagekit.io/288weifiq/uploads/temp/img_temp_6352999f8e9031-28975195-99666318.png" },
-    // { id: 46, name: "Africa", image: "https://ik.imagekit.io/288weifiq/destination/img_destination_64c2862026f257-08081692-45008691.png" },
+    { id: 46, name: "Africa", image: "https://ik.imagekit.io/288weifiq/destination/img_destination_64c2862026f257-08081692-45008691.png" },
     { id: 35, name: "Europe", image: "https://ik.imagekit.io/288weifiq/destination/img_destination_64c28d8db3bd21-15021459-74046607.png" },
     { id: 40, name: "Latin America", image: "https://ik.imagekit.io/288weifiq/destination/img_destination_64c8030545ec73-04420323-16145431.png" },
-    // { id: 44, name: "Middle East", image: "https://ik.imagekit.io/288weifiq/destination/img_destination_64c8037c87f057-00271065-75188789.png" },
+    { id: 44, name: "Middle East", image: "https://ik.imagekit.io/288weifiq/destination/img_destination_64c8037c87f057-00271065-75188789.png" },
     { id: 38, name: "US & Canada", image: "https://ik.imagekit.io/288weifiq/destination/img_destination_64c802d5083bf6-73864480-33247609.png" },
 ];
 

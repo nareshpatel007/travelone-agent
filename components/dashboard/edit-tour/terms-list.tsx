@@ -269,10 +269,12 @@ export default function TermsList({
                                         addListItem(
                                             activeTab === "terms" ? setTerms :
                                                 activeTab === "inclusions" ? setInclusions :
-                                                    setExclusions,
+                                                    activeTab === "notes" ? setNotes :
+                                                        setExclusions,
                                             activeTab === "terms" ? terms :
                                                 activeTab === "inclusions" ? inclusions :
-                                                    exclusions
+                                                    activeTab === "notes" ? notes :
+                                                        exclusions
                                         )
                                     }
                                     className="mt-5 flex items-center gap-2 bg-[#FFF9EE] text-black border border-black px-4 py-1 rounded text-sm cursor-pointer font-medium hover:bg-black hover:text-white"
