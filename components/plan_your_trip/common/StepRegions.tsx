@@ -17,7 +17,7 @@ const COUNTRY_CITY_GROUPS: Record<
         },
         {
             label: "Mount Fuji & Alps",
-            cities: ["Hakone", "Mount Fuji", "Takayama", "Kanazawa"],
+            cities: ["Hakone", "Mt.Fuji", "Takayama", "Kanazawa"],
         },
         {
             label: "Historic South",
