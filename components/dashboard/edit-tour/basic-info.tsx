@@ -296,7 +296,7 @@ export default function BasicInfo({ tourId, tourTitle, destination, cityNights, 
                                 onClick={() => setDestinationId(dest.id)}
                                 className={`cursor-pointer rounded overflow-hidden border transition-all duration-200 ${destinationId === dest.id ? "border-black bg-[#FFF9EE] shadow-md" : "border-gray-200 hover:border-black"}`}
                             >
-                                <div className="p-3 text-center text-sm font-medium">
+                                <div className="p-3 text-center text-base font-medium">
                                     {dest.name}
                                 </div>
                             </div>
@@ -350,7 +350,7 @@ export default function BasicInfo({ tourId, tourTitle, destination, cityNights, 
                                         onChange={(e) =>
                                             updateRow(row.id, "country_id", Number(e.target.value))
                                         }
-                                        className="w-full px-3 py-2 border border-gray-300 text-sm rounded"
+                                        className="w-full px-3 py-2 border border-gray-300 text-base rounded"
                                     >
                                         <option value="">Select Country</option>
                                         {countries.map(c => (
@@ -367,7 +367,7 @@ export default function BasicInfo({ tourId, tourTitle, destination, cityNights, 
                                         onChange={(e) =>
                                             updateRow(row.id, "city_id", Number(e.target.value))
                                         }
-                                        className="w-full px-3 py-2 border border-gray-300 text-sm rounded"
+                                        className="w-full px-3 py-2 border border-gray-300 text-base rounded"
                                     >
                                         <option value="">Select City</option>
                                         {row.available_cities?.map(city => (
@@ -384,7 +384,7 @@ export default function BasicInfo({ tourId, tourTitle, destination, cityNights, 
                                         onChange={(e) =>
                                             updateRow(row.id, "nights", Number(e.target.value))
                                         }
-                                        className="w-full px-3 py-2 border border-gray-300 text-sm rounded"
+                                        className="w-full px-3 py-2 border border-gray-300 text-base rounded"
                                     >
                                         {Array.from({ length: 15 }, (_, i) => (
                                             <option key={i} value={i}>
