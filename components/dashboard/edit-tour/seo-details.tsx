@@ -163,7 +163,7 @@ export default function SeoDetails({ tourId, tourData }: Props) {
                             {metaTitle || "Meta title preview"}
                         </p>
                         <p className="text-green-700 text-sm">
-                            https://yourdomain.com/tours/{slug || "your-slug"}
+                            https://travelone.io/tour/{slug || "your-slug"}
                         </p>
                         <p className="text-gray-700 text-sm">
                             {metaDescription || "Meta description preview will appear here..."}
