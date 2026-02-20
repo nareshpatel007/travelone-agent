@@ -385,7 +385,7 @@ export default function TermsList({
                                                     }
                                                     className="w-32 border rounded-xl px-3 py-2"
                                                 />
-                                                <span>% charge if cancelled</span>
+                                                <span>% of the total price</span>
 
                                                 <input
                                                     type="text"
