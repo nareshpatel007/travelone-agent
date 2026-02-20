@@ -1,7 +1,7 @@
 "use client";
 
 import { formatPrice } from "@/lib/utils";
-import { Edit, ExternalLink, Trash } from "lucide-react";
+import { Edit, ExternalLink, Sparkles, Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
@@ -14,6 +14,7 @@ interface Props {
     featured_image: string;
     tour_sub_title: string;
     starting_price: string;
+    is_ai_generated: boolean;
     status: string;
     setOpenDeleteModal: (value: boolean) => void;
     setSelectedTour: (value: any) => void;
@@ -35,6 +36,7 @@ export function TourCard({
     featured_image,
     tour_sub_title,
     starting_price,
+    is_ai_generated,
     status,
     setOpenDeleteModal,
     setSelectedTour,
@@ -60,18 +62,24 @@ export function TourCard({
                             />
                         </Link>
 
-                        <div className="absolute top-3 left-3 flex overflow-hidden rounded-full border border-black bg-black text-white">
+                        {is_ai_generated && <div className="absolute top-3 left-3 flex overflow-hidden rounded-full border border-amber-600">
+                            <span
+                                className="group relative inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-gradient-to-r from-amber-600 via-yellow-600 to-orange-600 rounded-full shadow-sm hover:shadow-md hover:scale-105 transition-all duration-200 active:scale-95 cursor-pointer"
+                            >
+                                <Sparkles className="h-3.5 w-3.5 transition-transform group-hover:rotate-12" />
+                            </span>
+                        </div>}
+
+                        <div className={`absolute top-3 ${is_ai_generated ? "left-15" : "left-3"} flex overflow-hidden rounded-full border border-black bg-black text-white`}>
                             <span className="px-3 py-1 text-xs">
                                 Start from USD ${formatPrice(starting_price, 0)}
                             </span>
                         </div>
 
-                        <div className="absolute top-3 right-3 flex overflow-hidden rounded-full border border-black bg-white text-black">
-                            <span className="px-3 py-1 text-xs">
-                                {status == "1" && "Published"}
-                                {status == "2" && "Draft"}
-                                {status == "3" && "Unpublished"}
-                            </span>
+                        <div className="absolute top-3 right-3 flex overflow-hidden">
+                            {status == "1" && <span className="rounded-full border border-black font-medium bg-green-100 text-black px-3 py-1 text-xs">Published</span>}
+                            {status == "2" && <span className="rounded-full border border-black font-medium bg-red-100 text-black px-3 py-1 text-xs">Draft</span>}
+                            {status == "3" && <span className="rounded-full border border-black font-medium bg-blue-100 text-black px-3 py-1 text-xs">Unpublished</span>}
                         </div>
                     </div>
                     <div className="flex flex-1 flex-col space-y-3 p-5 text-center">
@@ -95,7 +103,7 @@ export function TourCard({
                                 <ExternalLink className="h-4 w-4" /> Preview
                             </button>
                         </Link>
-                        
+
                         <Link target="_blank" href={`/dashboard/my-tours/basic-edit/${id}`}>
                             <button className="flex items-center gap-1 text-sm border border-black text-white bg-black rounded px-4 py-1 cursor-pointer hover:bg-black/90">
                                 <Edit className="h-4 w-4" /> Edit
