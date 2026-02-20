@@ -90,7 +90,7 @@ export default function PackageOptions({ tourId, packages }: Props) {
                     {/* Message */}
                     {message && (
                         <div
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${message.type === "success"
+                            className={`px-4 py-2 rounded text-sm font-medium transition-all duration-300 ${message.type === "success"
                                 ? "bg-green-100 text-green-700"
                                 : "bg-red-100 text-red-600"
                                 }`}
@@ -137,7 +137,7 @@ export default function PackageOptions({ tourId, packages }: Props) {
                                 {/* Toggle Switch */}
                                 <button
                                     onClick={() => handleToggle(idx)}
-                                    className={`relative inline-flex h-6 w-12 items-center rounded-full transition ${isPublished ? "bg-green-500" : "bg-gray-400"}`}
+                                    className={`relative inline-flex h-6 w-12 items-center rounded-full transition cursor-pointer ${isPublished ? "bg-green-500" : "bg-gray-400"}`}
                                 >
                                     <span
                                         className={`inline-block h-5 w-5 transform rounded-full bg-white transition ${isPublished ? "translate-x-6" : "translate-x-1"}`}

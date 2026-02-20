@@ -5,13 +5,14 @@ import { useState } from "react";
 
 interface Props {
     tourId: string;
+    listingOption: string;
     highlights: string[];
 }
 
-export default function Highlights({ tourId, highlights }: Props) {
+export default function Highlights({ tourId, listingOption, highlights }: Props) {
     // Define state
     const [formHighlights, setFormHighlights] = useState(highlights || []);
-    const [listingType, setListingType] = useState("Instant Booking");
+    const [listingType, setListingType] = useState(listingOption || "Instant Booking");
     const [isFormLoading, setIsFormLoading] = useState(false);
     const [message, setMessage] = useState<{
         type: "success" | "error";
@@ -46,7 +47,7 @@ export default function Highlights({ tourId, highlights }: Props) {
                 text: "Please select a listing type."
             });
             return;
-        } else if (formHighlights.length > 0 && formHighlights.includes("")) {
+        } else if (formHighlights.length === 0 || formHighlights.includes("")) {
             setMessage({
                 type: "error",
                 text: "Please enter all the highlights."
@@ -105,7 +106,7 @@ export default function Highlights({ tourId, highlights }: Props) {
                         {/* Message */}
                         {message && (
                             <div
-                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${message.type === "success"
+                                className={`px-4 py-2 rounded text-sm font-medium transition-all duration-300 ${message.type === "success"
                                     ? "bg-green-100 text-green-700"
                                     : "bg-red-100 text-red-600"
                                     }`}
@@ -130,7 +131,7 @@ export default function Highlights({ tourId, highlights }: Props) {
                 {/* Highlights Card */}
                 <div className="bg-white p-6 rounded shadow-sm space-y-6">
                     <div className="flex justify-between items-center">
-                        <h2 className="text-lg font-semibold text-gray-800">
+                        <h2 className="text-md font-semibold text-black">
                             Highlights
                         </h2>
                         <button
@@ -150,7 +151,7 @@ export default function Highlights({ tourId, highlights }: Props) {
                                         updateHighlight(idx, e.target.value)
                                     }
                                     placeholder="Enter highlight"
-                                    className="w-full px-4 py-2 text-base border rounded-lg focus:ring-1 focus:ring-black focus:outline-none"
+                                    className="w-full px-4 py-2 text-base border rounded focus:ring-1 focus:ring-black focus:outline-none"
                                 />
                                 <button
                                     onClick={() => removeHighlight(idx)}
@@ -165,7 +166,7 @@ export default function Highlights({ tourId, highlights }: Props) {
 
                 {/* Listing Type */}
                 <div className="bg-white p-6 rounded shadow-sm space-y-4">
-                    <h2 className="text-lg font-semibold text-gray-800">
+                    <h2 className="text-md font-semibold text-black">
                         Tour Listing Type
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

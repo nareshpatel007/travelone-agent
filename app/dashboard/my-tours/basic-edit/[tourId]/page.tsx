@@ -9,19 +9,27 @@ import Link from 'next/link';
 import PackageOptions from '@/components/dashboard/edit-tour/package-options';
 import TourItinerary from '@/components/dashboard/edit-tour/tour-itinerary';
 import Highlights from '@/components/dashboard/edit-tour/highlights';
+import MediaGallery from '@/components/dashboard/edit-tour/media-gallery';
+import SeoDetails from '@/components/dashboard/edit-tour/seo-details';
+import BasicInfo from '@/components/dashboard/edit-tour/basic-info';
+import GroupDates from '@/components/dashboard/edit-tour/group-dates';
+import TermsList from '@/components/dashboard/edit-tour/terms-list';
+import Visibility from '@/components/dashboard/edit-tour/visibility';
 
 // Define tabs
 const tabs = [
-    // { label: "Basic Info", value: "basic_info" },
-    // { label: "Highlights", value: "highlights" },
-    // { label: "Group Dates", value: "group_dates" },
-    // { label: "Media Gallery", value: "media_gallery" },
-    // { label: "SEO Details", value: "seo_details" },
+    { label: "Basic Info", value: "basic_info" },
+    { label: "Highlights", value: "highlights" },
+    { label: "Group Dates", value: "group_dates" },
+    { label: "Media Gallery", value: "media_gallery" },
+    { label: "SEO Details", value: "seo_details" },
     { label: "Package Options", value: "package_options" },
     { label: "Tour Itinerary", value: "tour_itinerary" },
-    // { label: "Terms", value: "terms" },
+    { label: "Policies & Terms", value: "terms" },
+    { label: "Visibility", value: "visibility" },
 ];
 
+// Define Props
 type Props = {
     params: Promise<{ tourId: string }>;
 };
@@ -30,8 +38,9 @@ export default function Page({ params }: Props) {
     // Define state
     const [ready, setReady] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [activeTab, setActiveTab] = useState('package_options');
+    const [activeTab, setActiveTab] = useState('basic_info');
     const [tourData, setTourData] = useState<any>(null);
+    const [recommandItinerary, setRecommandItinerary] = useState<number>(0);
 
     // Check login and set ready
     useEffect(() => {
@@ -72,6 +81,7 @@ export default function Page({ params }: Props) {
                 // Update the state
                 if (data.status) {
                     setTourData(data?.data ?? []);
+                    setRecommandItinerary(data?.data?.total_days ?? 0);
                 }
             } catch (error: any) {
                 if (error.name !== "AbortError") {
@@ -128,7 +138,7 @@ export default function Page({ params }: Props) {
                                             onClick={() => setActiveTab(tab.value)}
                                             className="relative py-3 px-4 text-base font-medium whitespace-nowrap transition cursor-pointer flex-shrink-0"
                                         >
-                                            <span className={activeTab === tab.value ? "text-black" : "text-gray-500 hover:text-black"}>
+                                            <span className={activeTab === tab.value ? "text-black" : "text-gray-800 hover:text-black"}>
                                                 {tab.label}
                                             </span>
 
@@ -141,10 +151,40 @@ export default function Page({ params }: Props) {
                             </div>
                         </div>
 
+                        {/* Tab for Basic Info */}
+                        {activeTab === "basic_info" && <BasicInfo
+                            tourId={tourData?.tour?.id}
+                            tourTitle={tourData?.tour?.name}
+                            destination={tourData?.destination_id}
+                            cityNights={tourData?.city_nights}
+                            setRecommandItinerary={setRecommandItinerary}
+                        />}
+
                         {/* Tab for Highlights */}
                         {activeTab === "highlights" && <Highlights
                             tourId={tourData?.tour?.id}
+                            listingOption={tourData?.tour?.listing_type}
                             highlights={tourData?.tour?.tour_highlights ?? []}
+                        />}
+
+                        {/* Tab for Group Dates */}
+                        {activeTab === "group_dates" && <GroupDates
+                            tourId={tourData?.tour?.id}
+                            tourData={tourData?.tour ?? []}
+                        />}
+
+                        {/* Tab for Media Gallery */}
+                        {activeTab === "media_gallery" && <MediaGallery
+                            tourId={tourData?.tour?.id}
+                            isMediaLocked={tourData?.tour?.lock_media_library}
+                            featuredImage={tourData?.tour?.featured_image}
+                            gallery={tourData?.tour?.media_gallery?.sightseeing ?? []}
+                        />}
+
+                        {/* Tab for SEO Details */}
+                        {activeTab === "seo_details" && <SeoDetails
+                            tourId={tourData?.tour?.id}
+                            tourData={tourData?.tour}
                         />}
 
                         {/* Tab for Package Options */}
@@ -158,6 +198,25 @@ export default function Page({ params }: Props) {
                             tourId={tourData?.tour?.id}
                             countries={tourData?.countries ?? []}
                             itinerary={tourData?.itinerary ?? []}
+                        />}
+                        
+                        {/* Tab for Tour Itinerary */}
+                        {activeTab === "terms" && <TermsList
+                            tourId={tourData?.tour?.id}
+                            cancellationPayment={tourData?.cancellation_payment}
+                            paymentScheduleList={tourData?.payment_schedule}
+                            importantNotes={tourData?.terms?.important_notes}
+                            termsConditions={tourData?.terms?.terms_conditions}
+                            whatIsincluded={tourData?.terms?.what_is_included}
+                            whatIsNotincluded={tourData?.terms?.what_is_not_included}
+                            faqsList={tourData?.terms?.faqs}
+                            isRefundable={tourData?.tour?.is_refundable}
+                        />}
+
+                        {/* Tab for Visibility */}
+                        {activeTab === "visibility" && <Visibility
+                            tourId={tourData?.tour?.id}
+                            status={tourData?.tour?.status}
                         />}
                     </>
                 )}
