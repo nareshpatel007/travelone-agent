@@ -219,64 +219,103 @@ export default function TermsList({
                         ))}
                     </div>
                     <div className="flex-1 bg-white rounded shadow-sm p-5 space-y-3">
-                        {/* TERMS / INCLUSIONS / EXCLUSIONS */}
-                        {["terms", "inclusions", "exclusions", "notes"].includes(activeTab) && (
+                        {/* Terms & Conditions */}
+                        {activeTab === "terms" && (
                             <>
-                                <h2 className="text-lg font-semibold capitalize">
-                                    {activeTab == "terms" ? "Terms & Conditions" : activeTab}
-                                </h2>
-
-                                {(activeTab === "terms" ? terms : activeTab === "inclusions" ? inclusions : activeTab === "notes" ? notes : exclusions).map((item: string, index: number) => (
+                                <h2 className="text-lg font-semibold capitalize">Terms & Conditions</h2>
+                                {terms.map((item: string, index: number) => (
                                     <div key={index} className="flex gap-3">
                                         <input
-                                            value={item}
-                                            onChange={(e) =>
-                                                handleListChange(
-                                                    activeTab === "terms" ? setTerms :
-                                                        activeTab === "inclusions" ? setInclusions :
-                                                            setExclusions,
-                                                    activeTab === "terms" ? terms :
-                                                        activeTab === "inclusions" ? inclusions :
-                                                            exclusions,
-                                                    index,
-                                                    e.target.value
-                                                )
-                                            }
+                                            defaultValue={item}
+                                            onChange={(e) => handleListChange(setTerms, terms, index, e.target.value)}
                                             placeholder={`Item ${index + 1}`}
                                             className="flex-1 px-4 py-2 border text-base rounded focus:ring-1 focus:ring-black outline-none"
                                         />
-
-                                        <button
-                                            onClick={() =>
-                                                removeListItem(
-                                                    activeTab === "terms" ? setTerms :
-                                                        activeTab === "inclusions" ? setInclusions :
-                                                            setExclusions,
-                                                    activeTab === "terms" ? terms :
-                                                        activeTab === "inclusions" ? inclusions :
-                                                            exclusions,
-                                                    index
-                                                )
-                                            }
-                                        >
+                                        <button onClick={() => removeListItem(setTerms, terms, index)}>
                                             <Trash2 size={16} className="text-red-500 hover:text-red-600 cursor-pointer" />
                                         </button>
                                     </div>
                                 ))}
-
                                 <button
-                                    onClick={() =>
-                                        addListItem(
-                                            activeTab === "terms" ? setTerms :
-                                                activeTab === "inclusions" ? setInclusions :
-                                                    activeTab === "notes" ? setNotes :
-                                                        setExclusions,
-                                            activeTab === "terms" ? terms :
-                                                activeTab === "inclusions" ? inclusions :
-                                                    activeTab === "notes" ? notes :
-                                                        exclusions
-                                        )
-                                    }
+                                    onClick={() => addListItem(setTerms, terms)}
+                                    className="mt-5 flex items-center gap-2 bg-[#FFF9EE] text-black border border-black px-4 py-1 rounded text-sm cursor-pointer font-medium hover:bg-black hover:text-white"
+                                >
+                                    <Plus size={16} /> Add Item
+                                </button>
+                            </>
+                        )}
+
+                        {/* Inclusions */}
+                        {activeTab === "inclusions" && (
+                            <>
+                                <h2 className="text-lg font-semibold capitalize">Inclusions</h2>
+                                {inclusions.map((item: string, index: number) => (
+                                    <div key={index} className="flex gap-3">
+                                        <input
+                                            defaultValue={item}
+                                            onChange={(e) => handleListChange(setInclusions, inclusions, index, e.target.value)}
+                                            placeholder={`Item ${index + 1}`}
+                                            className="flex-1 px-4 py-2 border text-base rounded focus:ring-1 focus:ring-black outline-none"
+                                        />
+                                        <button onClick={() => removeListItem(setInclusions, inclusions, index)}>
+                                            <Trash2 size={16} className="text-red-500 hover:text-red-600 cursor-pointer" />
+                                        </button>
+                                    </div>
+                                ))}
+                                <button
+                                    onClick={() => addListItem(setInclusions, inclusions)}
+                                    className="mt-5 flex items-center gap-2 bg-[#FFF9EE] text-black border border-black px-4 py-1 rounded text-sm cursor-pointer font-medium hover:bg-black hover:text-white"
+                                >
+                                    <Plus size={16} /> Add Item
+                                </button>
+                            </>
+                        )}
+
+                        {/* Exclusions */}
+                        {activeTab === "exclusions" && (
+                            <>
+                                <h2 className="text-lg font-semibold capitalize">Exclusions</h2>
+                                {exclusions.map((item: string, index: number) => (
+                                    <div key={index} className="flex gap-3">
+                                        <input
+                                            defaultValue={item}
+                                            onChange={(e) => handleListChange(setExclusions, exclusions, index, e.target.value)}
+                                            placeholder={`Item ${index + 1}`}
+                                            className="flex-1 px-4 py-2 border text-base rounded focus:ring-1 focus:ring-black outline-none"
+                                        />
+                                        <button onClick={() => removeListItem(setExclusions, exclusions, index)}>
+                                            <Trash2 size={16} className="text-red-500 hover:text-red-600 cursor-pointer" />
+                                        </button>
+                                    </div>
+                                ))}
+                                <button
+                                    onClick={() => addListItem(setExclusions, exclusions)}
+                                    className="mt-5 flex items-center gap-2 bg-[#FFF9EE] text-black border border-black px-4 py-1 rounded text-sm cursor-pointer font-medium hover:bg-black hover:text-white"
+                                >
+                                    <Plus size={16} /> Add Item
+                                </button>
+                            </>
+                        )}
+
+                        {/* Exclusions */}
+                        {activeTab === "notes" && (
+                            <>
+                                <h2 className="text-lg font-semibold capitalize">Important Notes</h2>
+                                {notes.map((item: string, index: number) => (
+                                    <div key={index} className="flex gap-3">
+                                        <input
+                                            defaultValue={item}
+                                            onChange={(e) => handleListChange(setNotes, notes, index, e.target.value)}
+                                            placeholder={`Item ${index + 1}`}
+                                            className="flex-1 px-4 py-2 border text-base rounded focus:ring-1 focus:ring-black outline-none"
+                                        />
+                                        <button onClick={() => removeListItem(setNotes, notes, index)}>
+                                            <Trash2 size={16} className="text-red-500 hover:text-red-600 cursor-pointer" />
+                                        </button>
+                                    </div>
+                                ))}
+                                <button
+                                    onClick={() => addListItem(setNotes, notes)}
                                     className="mt-5 flex items-center gap-2 bg-[#FFF9EE] text-black border border-black px-4 py-1 rounded text-sm cursor-pointer font-medium hover:bg-black hover:text-white"
                                 >
                                     <Plus size={16} /> Add Item
@@ -288,7 +327,6 @@ export default function TermsList({
                         {activeTab === "payment" && (
                             <>
                                 <h2 className="text-lg font-semibold">Payment Schedule</h2>
-
                                 {paymentSchedule.map((item: any, index: number) => (
                                     <div key={index} className="flex gap-4 items-center">
                                         <input

@@ -1,6 +1,5 @@
 'use client'
 
-import { set } from "date-fns";
 import { CheckCircle, Loader2, Plus, PlusCircle, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -48,6 +47,7 @@ export default function BasicInfo({ tourId, tourTitle, destination, cityNights, 
     // Define state
     const [title, setTitle] = useState(tourTitle || "");
     const [destinationId, setDestinationId] = useState<number | null>(destination || null);
+    const [draggedRowId, setDraggedRowId] = useState<number | null>(null);
     const [countries, setCountries] = useState<Country[]>([]);
     const [rows, setRows] = useState<Row[]>(cityNights || []);
     const [loadingCountries, setLoadingCountries] = useState(false);
@@ -188,10 +188,10 @@ export default function BasicInfo({ tourId, tourTitle, destination, cityNights, 
             setIsFormLoading(true);
 
             // Filter data
-            const updatedRows = rows.map(r => ({
+            const updatedRows = rows.map((r) => ({
                 country_id: r.country_id,
                 city_id: r.city_id,
-                nights: r.nights
+                nights: r.nights,
             }));
 
             // Make API call
@@ -239,6 +239,31 @@ export default function BasicInfo({ tourId, tourTitle, destination, cityNights, 
             // Update state
             setIsFormLoading(false);
         }
+    };
+
+    // Handle Drag Start
+    const handleDragStart = (id: number) => {
+        setDraggedRowId(id);
+    };
+
+    // Handle Drag Over
+    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+    };
+
+    // Handle Drop
+    const handleDrop = (targetId: number) => {
+        if (!draggedRowId || draggedRowId === targetId) return;
+
+        const updated = [...rows];
+        const draggedIndex = updated.findIndex(r => r.id === draggedRowId);
+        const targetIndex = updated.findIndex(r => r.id === targetId);
+
+        const [removed] = updated.splice(draggedIndex, 1);
+        updated.splice(targetIndex, 0, removed);
+
+        setRows(updated);
+        setDraggedRowId(null);
     };
 
     return (
@@ -342,8 +367,21 @@ export default function BasicInfo({ tourId, tourTitle, destination, cityNights, 
                         )}
 
                         {/* ROWS */}
-                        {!loadingCountries && rows.map(row => (
-                            <div key={row.id} className="grid grid-cols-[30%_30%_30%_10%] gap-4 items-center">
+                        {!loadingCountries && rows.map((row, index) => (
+                            <div
+                                key={index}
+                                draggable
+                                onDragStart={() => handleDragStart(row.id)}
+                                onDragOver={handleDragOver}
+                                onDrop={() => handleDrop(row.id)}
+                                className="grid grid-cols-[5%_30%_30%_25%_10%] gap-4 items-center bg-gray-50 p-3 rounded border border-gray-200 hover:border-black transition-all cursor-move"
+                            >
+                                {/* Drag Icon */}
+                                <div className="text-gray-400 text-center font-bold cursor-grab">
+                                    ☰
+                                </div>
+
+                                {/* Country */}
                                 <div>
                                     <select
                                         value={row.country_id || ""}
@@ -361,6 +399,7 @@ export default function BasicInfo({ tourId, tourTitle, destination, cityNights, 
                                     </select>
                                 </div>
 
+                                {/* City */}
                                 <div>
                                     <select
                                         value={row.city_id || ""}
@@ -378,6 +417,7 @@ export default function BasicInfo({ tourId, tourTitle, destination, cityNights, 
                                     </select>
                                 </div>
 
+                                {/* Nights */}
                                 <div>
                                     <select
                                         value={row.nights}
@@ -394,6 +434,7 @@ export default function BasicInfo({ tourId, tourTitle, destination, cityNights, 
                                     </select>
                                 </div>
 
+                                {/* Delete */}
                                 <div>
                                     <button onClick={() => removeRow(row.id)}>
                                         <Trash2 size={16} className="text-red-500 hover:text-red-600 cursor-pointer" />
