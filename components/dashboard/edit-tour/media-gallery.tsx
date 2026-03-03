@@ -1,8 +1,11 @@
 'use client'
 
-import { CheckCircle, Loader2, Plus, Star } from "lucide-react";
+import { CheckCircle, Loader2, Star } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, DragEndEvent } from "@dnd-kit/core";
+import { SortableContext, useSortable, rectSortingStrategy, arrayMove } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 // Define props
 interface Props {
@@ -101,6 +104,20 @@ export default function MediaGallery({ tourId, isMediaLocked, featuredImage, gal
         }
     };
 
+    // Drag and drop
+    const sensors = useSensors(useSensor(PointerSensor));
+
+    // Handle drag end
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event;
+        if (!over || active.id === over.id) return;
+
+        const oldIndex = images.indexOf(active.id as string);
+        const newIndex = images.indexOf(over.id as string);
+
+        setImages(arrayMove(images, oldIndex, newIndex));
+    };
+
     return (
         <div className="py-6 space-y-6">
             <div className="max-w-7xl mx-auto space-y-8">
@@ -134,63 +151,27 @@ export default function MediaGallery({ tourId, isMediaLocked, featuredImage, gal
                     </div>
                 </div>
 
-                {/* UPLOAD BOX */}
-                {/* <div className="bg-white p-6 rounded shadow-sm">
-                    <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded p-8 cursor-pointer hover:border-black transition space-y-3">
-                        <Plus size={28} className="text-gray-500" />
-                        <p className="text-gray-600 text-sm">Click to upload new image</p>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => handleAddImages(e.target.files)}
-                            className="hidden"
-                        />
-                    </label>
-                </div> */}
-
                 {/* GALLERY GRID */}
                 <div className="bg-white p-6 rounded shadow-sm space-y-4">
-                    <div className="grid grid-cols-2 md:grid-cols-6 gap-6">
-                        {images.length > 0 && images.map((img, index) => (
-                            <div
-                                key={index}
-                                className="relative group rounded-md overflow-hidden shadow-sm bg-white"
-                            >
-                                <Image
-                                    src={img}
-                                    alt="Gallery"
-                                    className="w-full h-40 object-cover"
-                                    width={200}
-                                    height={200}
-                                    draggable={false}
-                                />
-
-                                {/* Featured Badge */}
-                                {featured === img && (
-                                    <div className="absolute top-3 left-3 bg-black text-white text-xs px-3 py-1 rounded-full flex items-center gap-1">
-                                        <Star size={12} /> Featured
-                                    </div>
-                                )}
-
-                                {/* Overlay */}
-                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
-                                    <button
-                                        onClick={() => setFeatured(img)}
-                                        className="bg-white text-black px-3 py-1 rounded text-xs font-medium cursor-pointer hover:bg-gray-200"
-                                    >
-                                        Set Featured
-                                    </button>
-
-                                    <button
-                                        onClick={() => removeImage(img)}
-                                        className="bg-red-500 text-white px-3 py-1 rounded text-xs font-medium cursor-pointer hover:bg-red-600"
-                                    >
-                                        Remove
-                                    </button>
-                                </div>
+                    <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
+                        onDragEnd={handleDragEnd}
+                    >
+                        <SortableContext items={images} strategy={rectSortingStrategy}>
+                            <div className="grid grid-cols-2 md:grid-cols-6 gap-6">
+                                {images.map((img) => (
+                                    <SortableImage
+                                        key={img}
+                                        img={img}
+                                        featured={featured}
+                                        setFeatured={setFeatured}
+                                        removeImage={removeImage}
+                                    />
+                                ))}
                             </div>
-                        ))}
-                    </div>
+                        </SortableContext>
+                    </DndContext>
                 </div>
 
                 {/* Featured Preview */}
@@ -222,6 +203,72 @@ export default function MediaGallery({ tourId, isMediaLocked, featuredImage, gal
                         Yes! Images will be updated automatically when the itinerary is updated.
                     </h2>
                 </div>
+            </div>
+        </div>
+    );
+}
+
+// Sortable Image
+function SortableImage({
+    img,
+    featured,
+    setFeatured,
+    removeImage,
+}: any) {
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+        useSortable({ id: img });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.5 : 1,
+    };
+
+    return (
+        <div
+            ref={setNodeRef}
+            style={style}
+            {...attributes}
+            {...listeners}
+            className="relative group rounded-md overflow-hidden shadow-sm bg-white cursor-grab active:cursor-grabbing"
+        >
+            <Image
+                src={img}
+                alt="Gallery"
+                className="w-full h-40 object-cover pointer-events-none"
+                width={200}
+                height={200}
+                draggable={false}
+            />
+
+            {/* Featured Badge */}
+            {featured === img && (
+                <div className="absolute top-3 left-3 bg-black text-white text-xs px-3 py-1 rounded-full flex items-center gap-1">
+                    <Star size={12} /> Featured
+                </div>
+            )}
+
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setFeatured(img);
+                    }}
+                    className="bg-white text-black px-3 py-1 rounded text-xs font-medium hover:bg-gray-200"
+                >
+                    Set Featured
+                </button>
+
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        removeImage(img);
+                    }}
+                    className="bg-red-500 text-white px-3 py-1 rounded text-xs font-medium hover:bg-red-600"
+                >
+                    Remove
+                </button>
             </div>
         </div>
     );

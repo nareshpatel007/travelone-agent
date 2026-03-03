@@ -1,6 +1,6 @@
 'use client'
 
-import { CheckCircle, FileWarning, Loader2, Plus, PlusCircle, Trash2 } from "lucide-react";
+import { CheckCircle, Loader2, Plus, PlusCircle, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 // Define props

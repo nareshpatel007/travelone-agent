@@ -2,6 +2,9 @@
 
 import { CheckCircle, Loader2, Plus, PlusCircle, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, DragEndEvent } from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 // Define destinations
 const destinations = [
@@ -241,29 +244,18 @@ export default function BasicInfo({ tourId, tourTitle, destination, cityNights, 
         }
     };
 
-    // Handle Drag Start
-    const handleDragStart = (id: number) => {
-        setDraggedRowId(id);
-    };
+    // Drag and Drop
+    const sensors = useSensors(useSensor(PointerSensor));
 
-    // Handle Drag Over
-    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-    };
+    // Handle Drag End
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event;
+        if (!over || active.id === over.id) return;
 
-    // Handle Drop
-    const handleDrop = (targetId: number) => {
-        if (!draggedRowId || draggedRowId === targetId) return;
+        const oldIndex = rows.findIndex(r => r.id === active.id);
+        const newIndex = rows.findIndex(r => r.id === over.id);
 
-        const updated = [...rows];
-        const draggedIndex = updated.findIndex(r => r.id === draggedRowId);
-        const targetIndex = updated.findIndex(r => r.id === targetId);
-
-        const [removed] = updated.splice(draggedIndex, 1);
-        updated.splice(targetIndex, 0, removed);
-
-        setRows(updated);
-        setDraggedRowId(null);
+        setRows(arrayMove(rows, oldIndex, newIndex));
     };
 
     return (
@@ -367,84 +359,110 @@ export default function BasicInfo({ tourId, tourTitle, destination, cityNights, 
                         )}
 
                         {/* ROWS */}
-                        {!loadingCountries && rows.map((row, index) => (
-                            <div
-                                key={index}
-                                draggable
-                                onDragStart={() => handleDragStart(row.id)}
-                                onDragOver={handleDragOver}
-                                onDrop={() => handleDrop(row.id)}
-                                className="grid grid-cols-[5%_30%_30%_25%_10%] gap-4 items-center bg-gray-50 p-3 rounded border border-gray-200 hover:border-black transition-all cursor-move"
+                        <DndContext
+                            sensors={sensors}
+                            collisionDetection={closestCenter}
+                            onDragEnd={handleDragEnd}
+                        >
+                            <SortableContext
+                                items={rows.map(r => r.id)}
+                                strategy={verticalListSortingStrategy}
                             >
-                                {/* Drag Icon */}
-                                <div className="text-gray-400 text-center font-bold cursor-grab">
-                                    ☰
+                                <div className="space-y-3">
+                                    {rows.map(row => (
+                                        <SortableRow
+                                            key={row.id}
+                                            row={row}
+                                            countries={countries}
+                                            updateRow={updateRow}
+                                            removeRow={removeRow}
+                                        />
+                                    ))}
                                 </div>
-
-                                {/* Country */}
-                                <div>
-                                    <select
-                                        value={row.country_id || ""}
-                                        onChange={(e) =>
-                                            updateRow(row.id, "country_id", Number(e.target.value))
-                                        }
-                                        className="w-full px-3 py-2 border border-gray-300 text-base rounded"
-                                    >
-                                        <option value="">Select Country</option>
-                                        {countries.map(c => (
-                                            <option key={c.id} value={c.id}>
-                                                {c.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                {/* City */}
-                                <div>
-                                    <select
-                                        value={row.city_id || ""}
-                                        onChange={(e) =>
-                                            updateRow(row.id, "city_id", Number(e.target.value))
-                                        }
-                                        className="w-full px-3 py-2 border border-gray-300 text-base rounded"
-                                    >
-                                        <option value="">Select City</option>
-                                        {row.available_cities?.map(city => (
-                                            <option key={city.id} value={city.id}>
-                                                {city.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                {/* Nights */}
-                                <div>
-                                    <select
-                                        value={row.nights}
-                                        onChange={(e) =>
-                                            updateRow(row.id, "nights", Number(e.target.value))
-                                        }
-                                        className="w-full px-3 py-2 border border-gray-300 text-base rounded"
-                                    >
-                                        {Array.from({ length: 15 }, (_, i) => (
-                                            <option key={i} value={i}>
-                                                {i} {`${i <= 1 ? "night" : "nights"}`}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                {/* Delete */}
-                                <div>
-                                    <button onClick={() => removeRow(row.id)}>
-                                        <Trash2 size={16} className="text-red-500 hover:text-red-600 cursor-pointer" />
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
+                            </SortableContext>
+                        </DndContext>
                     </div>
                 )}
             </div>
+        </div>
+    );
+}
+
+// Sortable Row
+function SortableRow({ row, countries, updateRow, removeRow }: any) {
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: row.id });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+    };
+
+    return (
+        <div
+            ref={setNodeRef}
+            style={style}
+            className="grid grid-cols-[3%_32%_32%_25%_10%] gap-4 items-center bg-white transition-all duration-200"
+        >
+            {/* Drag Handle */}
+            <div
+                {...attributes}
+                {...listeners}
+                className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-black"
+            >
+                ☰
+            </div>
+
+            {/* Country */}
+            <select
+                value={row.country_id || ""}
+                onChange={(e) =>
+                    updateRow(row.id, "country_id", Number(e.target.value))
+                }
+                className="w-full px-3 py-2 text-base border border-gray-300 rounded"
+            >
+                <option value="">Select Country</option>
+                {countries.map((c: any) => (
+                    <option key={c.id} value={c.id}>
+                        {c.name}
+                    </option>
+                ))}
+            </select>
+
+            {/* City */}
+            <select
+                value={row.city_id || ""}
+                onChange={(e) =>
+                    updateRow(row.id, "city_id", Number(e.target.value))
+                }
+                className="w-full px-3 py-2 text-base border border-gray-300 rounded"
+            >
+                <option value="">Select City</option>
+                {row.available_cities?.map((city: any) => (
+                    <option key={city.id} value={city.id}>
+                        {city.name}
+                    </option>
+                ))}
+            </select>
+
+            {/* Nights */}
+            <select
+                value={row.nights}
+                onChange={(e) =>
+                    updateRow(row.id, "nights", Number(e.target.value))
+                }
+                className="w-full px-3 py-2 text-base border border-gray-300 rounded"
+            >
+                {Array.from({ length: 15 }, (_, i) => (
+                    <option key={i} value={i}>
+                        {i} {i <= 1 ? "night" : "nights"}
+                    </option>
+                ))}
+            </select>
+
+            {/* Delete */}
+            <button onClick={() => removeRow(row.id)}>
+                <Trash2 size={16} className="text-red-500 cursor-pointer" />
+            </button>
         </div>
     );
 }
