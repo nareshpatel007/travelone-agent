@@ -215,8 +215,14 @@ function SortableImage({
     setFeatured,
     removeImage,
 }: any) {
-    const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-        useSortable({ id: img });
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging,
+    } = useSortable({ id: img });
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -228,14 +234,21 @@ function SortableImage({
         <div
             ref={setNodeRef}
             style={style}
-            {...attributes}
-            {...listeners}
-            className="relative group rounded-md overflow-hidden shadow-sm bg-white cursor-grab active:cursor-grabbing"
+            className="relative group rounded-md overflow-hidden shadow-sm bg-white"
         >
+            {/* Drag Handle */}
+            <div
+                {...attributes}
+                {...listeners}
+                className="absolute top-2 right-2 z-10 bg-white px-1 rounded shadow cursor-grab active:cursor-grabbing"
+            >
+                ☰
+            </div>
+
             <Image
                 src={img}
                 alt="Gallery"
-                className="w-full h-40 object-cover pointer-events-none"
+                className="w-full h-40 object-cover"
                 width={200}
                 height={200}
                 draggable={false}
@@ -251,21 +264,17 @@ function SortableImage({
             {/* Overlay */}
             <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
                 <button
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        setFeatured(img);
-                    }}
-                    className="bg-white text-black px-3 py-1 rounded text-xs font-medium hover:bg-gray-200"
+                    type="button"
+                    onClick={() => setFeatured(img)}
+                    className="bg-white text-black px-3 py-1 rounded text-xs font-medium hover:bg-gray-200 cursor-pointer"
                 >
                     Set Featured
                 </button>
 
                 <button
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        removeImage(img);
-                    }}
-                    className="bg-red-500 text-white px-3 py-1 rounded text-xs font-medium hover:bg-red-600"
+                    type="button"
+                    onClick={() => removeImage(img)}
+                    className="bg-red-500 text-white px-3 py-1 rounded text-xs font-medium hover:bg-red-600 cursor-pointer"
                 >
                     Remove
                 </button>
